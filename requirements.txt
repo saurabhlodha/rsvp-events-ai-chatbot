@@ -1,7 +1,9 @@
-selenium==4.16.0
-webdriver_manager==4.0.1
-beautifulsoup4==4.12.2
-rich==13.7.0
-langchain==0.1.0
-google-generativeai==0.3.1
-python-dotenv==1.0.0
+selenium
+webdriver_manager
+beautifulsoup4
+rich
+langchain
+google-generativeai
+python-dotenv
+langchain-google-genai
+jupyter
