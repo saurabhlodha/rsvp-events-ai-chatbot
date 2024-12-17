@@ -13,7 +13,7 @@ class EventScraper:
 
     def setup_driver(self):
         options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
+        # options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
         self.driver = webdriver.Chrome(options=options)
@@ -44,7 +44,7 @@ class EventScraper:
 
     def login_luma(self, email, password):
         try:
-            self.driver.get('https://lu.ma/login')
+            self.driver.get('https://lu.ma/signin')
             
             # Wait for email input and enter credentials
             email_input = WebDriverWait(self.driver, 10).until(
@@ -75,11 +75,11 @@ class EventScraper:
         
         events = []
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
-        event_cards = soup.find_all('div', {'class': 'group-content'})
+        event_cards = soup.find_all('div', {"data-element-name": "categoryResults-eventCard"})
         
         for card in event_cards[:10]:  # Limit to first 10 events
             try:
-                title = card.find('h3').text.strip()
+                title = card.find('h2').text.strip()
                 date = card.find('time').text.strip()
                 link = card.find('a')['href']
                 events.append({
@@ -102,7 +102,8 @@ class EventScraper:
         
         events = []
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
-        event_cards = soup.find_all('div', {'class': 'event-card'})
+
+        event_cards = soup.find_all('div', {"data-element-name": "categoryResults-eventCard"})
         
         for card in event_cards[:10]:  # Limit to first 10 events
             try:
@@ -126,7 +127,7 @@ class EventScraper:
             time.sleep(3)
             
             if event['platform'] == 'meetup':
-                rsvp_button = self.driver.find_element(By.CSS_SELECTOR, "button[data-testid='attend-button']")
+                rsvp_button = self.driver.find_element(By.CSS_SELECTOR, "button[data-testid='attend-irl-btn']")
             else:  # luma
                 rsvp_button = self.driver.find_element(By.CSS_SELECTOR, "button.rsvp-button")
                 
