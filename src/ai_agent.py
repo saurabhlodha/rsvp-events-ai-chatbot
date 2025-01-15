@@ -46,4 +46,3 @@ class AIEventAgent:
         # self.chat_interface.append(("assistant", response.content))
 
         return response.content
-    
