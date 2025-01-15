@@ -43,7 +43,7 @@ class EventManager:
         # Lu.ma login
         luma_email = self.chat_interface.get_user_input("Lu.ma email:")
         luma_password = self.chat_interface.get_user_input("Lu.ma password:")
-        
+
         if self.scraper.login_luma(luma_email, luma_password):
             self.chat_interface.display_message("✓ Logged in to Lu.ma", "success")
         else:

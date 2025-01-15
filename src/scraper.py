@@ -121,13 +121,28 @@ class EventScraper:
                 
         return events
 
+    def find_meetup_rsvp_btn(self):
+        button, event_type = None, None
+
+        if len(self.driver.find_elements(By.CSS_SELECTOR, "button[data-testid='attend-irl-btn']")) > 0:
+            button = self.driver.find_elements(By.CSS_SELECTOR, "button[data-testid='attend-irl-btn']")
+            event_type = 'in-person-event-button'
+        elif len(self.driver.find_elements(By.CSS_SELECTOR, "button[data-testid='attend-online-btn']")) > 0:
+            button = self.driver.find_element(By.CSS_SELECTOR, "button[data-testid='attend-online-btn']")
+            event_type = 'online-event-button'
+        elif len(self.driver.find_elements(By.CSS_SELECTOR, "button[data-testid='waitlist-btn']")) > 0:
+            button = self.driver.find_element(By.CSS_SELECTOR, "button[data-testid='waitlist-btn']")
+            event_type = 'waitlist-event-button'
+
+        return [button, event_type]
+
     def rsvp_event(self, event):
         try:
             self.driver.get(event['link'])
             time.sleep(3)
             
             if event['platform'] == 'meetup':
-                rsvp_button = self.driver.find_element(By.CSS_SELECTOR, "button[data-testid='attend-irl-btn']")
+                rsvp_button, event_type = self.find_meetup_rsvp_btn()
             else:  # luma
                 rsvp_button = self.driver.find_element(By.CSS_SELECTOR, "button.rsvp-button")
                 
